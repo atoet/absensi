@@ -1,0 +1,67 @@
+<!--Template by Bracket-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">     
+
+    <title>Absensi System</title>
+
+    <!-- vendor css -->
+    
+    <link href="{% static 'lib/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/Ionicons/css/ionicons.css' %}" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bracket.css' %}">
+  </head>
+
+  <body>    
+
+    <div class="d-flex align-items-center justify-content-center bg-br-primary ht-100v">      
+
+      <div class="login-wrapper wd-300 wd-xs-350 pd-25 pd-xs-40 bg-white rounded shadow-base">
+
+        <!--Pesan Error-->
+        <div class="form-group">
+          {% if messages %}
+              {% for message in messages %}
+                  {% if 'safe' in message.tags %}
+                  <div class="alert alert-danger">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                      {{message|safe}} &nbsp; </div>
+                  {% else %}
+                  <div class="alert alert-danger">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                      {{message}} &nbsp; </div>
+                  {% endif %}
+              {% endfor %}          
+          {% endif %}
+        </div>
+
+        <div class="signin-logo tx-center tx-28 tx-bold tx-inverse"><span class="tx-normal">Login</span></div>
+
+        <div class="tx-center mg-b-20">- Absensi Sistem -</div>
+        <form action="{% url 'cek_login' %}" method="POST">
+        {% csrf_token %}
+          <div class="form-group">
+            <input type="text" class="form-control" name="email" placeholder="Email" required="required">
+          </div><!-- form-group -->
+          <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+          </div><!-- form-group -->
+          <button type="submit" class="btn btn-info btn-block">Sign In</button>
+        </form>
+      </div><!-- login-wrapper -->
+        
+    </div><!-- d-flex -->
+    
+    <script src="{% static 'lib/jquery/jquery.js' %}"></script>
+    <script src="{% static 'lib/popper.js/popper.js' %}"></script>
+    <script src="{% static 'lib/bootstrap/bootstrap.js' %}"></script>
+
+  </body>
+</html>

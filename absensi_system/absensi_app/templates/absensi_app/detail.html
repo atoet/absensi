@@ -1,0 +1,188 @@
+<!--Template by Bracket-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Absensi System</title>
+
+    <!-- vendor css -->
+    <link href="{% static 'lib/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/Ionicons/css/ionicons.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/jquery-switchbutton/jquery.switchButton.css' %}" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bracket.css' %}">
+  </head>
+
+  <body>
+
+    <!-- Left Side -->
+    <div class="br-logo"><a href=""><span>Absensi</span></a></div>
+
+    <div class="br-sideleft overflow-y-auto">
+      <label class="sidebar-label pd-x-15 mg-t-20">&nbsp;</label>
+      <div class="br-sideleft-menu">
+        <a href="{% url 'home' %}" class="br-menu-link">
+          <div class="br-menu-item">
+            <i class="menu-item-icon icon ion-ios-home-outline tx-22"></i>
+            <span class="menu-item-label">Data Presensi</span>            
+          </div>
+        </a>  
+          <br>
+          <div class="br-menu-item"> 
+            <span>Hai Admin, selamat datang.</span>           
+          </div>               
+      </div>
+      <br>
+    </div>
+
+
+    <!-- Header -->
+    <div class="br-header">
+      <div class="br-header-left">        
+      </div>
+
+      <div class="br-header-right">
+        <nav class="nav">                     
+          <div style="margin-right: 28px;">
+            <a href="{% url 'logout' %}"><i style="color: blue;" class="icon ion-power"></i> <span style="color: blue;">Sign Out</span></a></li></a>                        
+          </div>
+        </nav>       
+      </div>
+    </div>
+   
+    
+    <!-- Main -->
+    
+    <div class="br-contentpanel">
+      <div class="br-pageheader pd-y-15 pd-md-l-20">
+        <nav class="breadcrumb pd-0 mg-0 tx-12">          
+          <span class="breadcrumb-item active">{{tgl}}</span>
+        </nav>
+      </div>
+
+      <!--Pesan Error-->
+      <div class="form-group">
+        {% if messages %}
+            {% for message in messages %}
+                {% if 'safe' in message.tags %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{message|safe}} &nbsp; </div>
+                {% else %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{message}} &nbsp; </div>
+                {% endif %}
+            {% endfor %}          
+        {% endif %}
+      </div>
+
+      <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
+        <h4 class="tx-gray-800 mg-b-5">Data Presensi - {{nama}}</h4>       
+      </div>
+
+      <div class="d-flex align-items-center justify-content-start pd-x-20 pd-sm-x-30 pd-t-25 mg-b-20 mg-sm-b-30">
+
+        <button id="showSubLeft" class="btn btn-secondary mg-r-10 hidden-lg-up"><i class="fa fa-navicon"></i></button>       
+        
+        <div class="btn-group hidden-xs-down">
+            <a href="{% url 'home' %}" class="btn btn-info">Back</a>
+        </div>
+
+      </div>
+
+      <div class="br-pagebody pd-x-20 pd-sm-x-30">
+        <div class="card bd-0 shadow-base">  
+          <table class="table mg-b-0 table-contact">
+            <thead>
+              <tr>
+                <th class="tx-10-force tx-mont tx-medium">List History Absen</th>
+                <th class="tx-10-force tx-mont tx-medium">Hapus Data</th>
+              </tr>
+            </thead>
+            <tbody> 
+                {% for absen in data_absen %}  
+                <tr>                
+                    <td class="valign-middle hidden-xs-down">{{absen.status}} - {{absen.time}}, {{absen.date}}
+                    </td>
+                    <td class="valign-middle hidden-xs-down">
+                        <a href="{% url 'delete' absen.id absen.karyawan_id absen.status_id %}" class="btn btn-danger"><i class="fa fa-trash mg-r-5"></i> Hapus</a>
+                    </td>                
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="br-footer">
+        <div class="footer-left">
+          <div>Absensi - Sistem Prototype - For interview purpose only.</div>
+        </div>        
+      </footer>
+    </div>
+
+
+    <script src="{% static 'lib/jquery/jquery.js' %}"></script>
+    <script src="{% static 'lib/popper.js/popper.js' %}"></script>
+    <script src="{% static 'lib/bootstrap/bootstrap.js' %}"></script>
+    <script src="{% static 'lib/perfect-scrollbar/js/perfect-scrollbar.jquery.js' %}"></script>
+    <script src="{% static 'lib/moment/moment.js' %}"></script>
+    <script src="{% static 'lib/jquery-ui/jquery-ui.js' %}"></script>
+    <script src="{% static 'ib/jquery-switchbutton/jquery.switchButton.js' %}l"></script>
+    <script src="{% static 'lib/peity/jquery.peity.js' %}"></script>
+
+    <script src="{% static 'js/bracket.js' %}"></script>
+    <script>
+      $(function(){
+        'use strict';
+
+        // show only the icons and hide left menu label by default
+        $('.menu-item-label,.menu-item-arrow').addClass('op-lg-0-force d-lg-none');
+
+        $(document).on('mouseover', function(e){
+          e.stopPropagation();
+          if($('body').hasClass('collapsed-menu')) {
+            var targ = $(e.target).closest('.br-sideleft').length;
+            if(targ) {
+              $('body').addClass('expand-menu');
+
+              // show current shown sub menu that was hidden from collapsed
+              $('.show-sub + .br-menu-sub').slideDown();
+
+              var menuText = $('.menu-item-label,.menu-item-arrow');
+              menuText.removeClass('d-lg-none');
+              menuText.removeClass('op-lg-0-force');
+
+            } else {
+              $('body').removeClass('expand-menu');
+
+              // hide current shown menu
+              $('.show-sub + .br-menu-sub').slideUp();
+
+              var menuText = $('.menu-item-label,.menu-item-arrow');
+              menuText.addClass('op-lg-0-force');
+              menuText.addClass('d-lg-none');
+            }
+          }
+        });
+
+        // Showing sub left menu
+        $('#showSubLeft').on('click', function(){
+          if($('body').hasClass('show-subleft')) {
+            $('body').removeClass('show-subleft');
+          } else {
+            $('body').addClass('show-subleft');
+          }
+        });
+
+      });
+    </script>
+  </body>
+</html>
